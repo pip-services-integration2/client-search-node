@@ -39,13 +39,13 @@ npm update
 
 Inside your code get the reference to the client SDK
 ```javascript
-var sdk = new require('client-search-node');
+let sdk = new require('client-search-node');
 ```
 
 Define client configuration parameters that match configuration of the microservice external API
 ```javascript
 // Client configuration
-var config = {
+let config = {
     connection: {
         protocol: 'http',
         host: 'localhost', 
@@ -57,25 +57,19 @@ var config = {
 Instantiate the client and open connection to the microservice
 ```javascript
 // Create the client instance
-var client = new SearchHttpClientV1();
+let client = new SearchHttpClientV1();
 
 // Connect to the microservice
-client.open(function(err) {
-    if (err) {
-        console.error('Connection to the microservice failed');
-        console.error(err);
-        return;
-    }
-    
-    // Work with the microservice
-    ...
-});
+await client.open();
+
+// Work with the microservice
+...
 ```
 
 Now the client is ready to perform operations
 ```javascript
 // Create a new search record
-var record = {
+let record = {
     id: '1',
     type: 'Test type1',
     name: 'Test name 1',
@@ -93,18 +87,15 @@ var record = {
     tags: ['black']
 };
 
-client.setRecord(
+record = await client.setRecord(
     null,
-    record,
-    function (err, record) {
-        ...
-    }
+    record
 );
 ```
 
 ```javascript
 // Get the list of search records
-client.getRecords(
+let page = await client.getRecords(
     null,
     {
         type: 'Test type1',
@@ -114,9 +105,6 @@ client.getRecords(
         total: true,
         skip: 0,
         take: 10
-    },
-    function(err, page) {
-    ...    
     }
 );
 ```    
