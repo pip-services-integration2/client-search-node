@@ -1,0 +1,59 @@
+{
+    "name": "client-search-node",
+    "version": "1.0.0",
+    "author": "Conceptual Vision Consulting LLC",
+    "description": "Search client SDK for Pip.Services in Node.js",
+    "contributors": [
+        {
+            "name": "Sergey Seroukhov",
+            "email": "seroukhov@gmail.com"
+        },
+        {
+            "name": "Danil Prisiazhnyi",
+            "email": "judas.priest999@gmail.com"
+        }
+    ],
+    "main": "./obj/src/index.js",
+    "typings": "./obj/src/index.d.ts",
+    "keywords": [
+        "pip.services",
+        "blobs",
+        "storage",
+        "microservice",
+        "client",
+        "sdk"
+    ],
+    "noAnalyze": true,
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:pip-services-integration2/client-search-node.git"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "private": false,
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch",
+        "protogen": "cd src/protos && protoc --plugin=protoc-gen-ts=../../node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./ --ts_out=. --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin` blobs_v1.proto",
+        "test": "mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "retest": "tsc && mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "benchmark": "matcha -R clean -I tdd ./obj/benchmark/run.js",
+        "rebenchmark": "tsc && matcha -R clean -I tdd ./obj/benchmark/run.js"
+    },
+    "dependencies": {
+        "pip-services3-commons-nodex": "^1.0.*",
+        "pip-services3-components-nodex": "^1.4.*",
+        "pip-services3-rpc-nodex": "^1.2.*"
+    },
+    "devDependencies": {
+        "@types/node": "*",
+        "@types/chai": "*",
+        "@types/mocha": "*",
+        "restify": "^4.3.0",
+        "chai": "*",
+        "mocha": "*",
+        "service-search-node": "https://github.com/pip-services-integration2/service-search-node.git"
+    }
+}
