@@ -15,12 +15,12 @@ export class SearchDirectClientV1 extends DirectClient<any> implements ISearchCl
         let timing = this.instrument(correlationId, 'search.get_records');
 
         try {
-            return await this._controller.getRecords(correlationId, filter, paging, sort);
+            let res = await this._controller.getRecords(correlationId, filter, paging, sort);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -28,12 +28,12 @@ export class SearchDirectClientV1 extends DirectClient<any> implements ISearchCl
         let timing = this.instrument(correlationId, 'search.get_record_by_id');
 
         try {
-            return await this._controller.getRecordById(correlationId, recordId);
+            let res = await this._controller.getRecordById(correlationId, recordId);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -42,12 +42,12 @@ export class SearchDirectClientV1 extends DirectClient<any> implements ISearchCl
         
 
         try {
-            return await this._controller.setRecord(correlationId, record);
+            let res = await this._controller.setRecord(correlationId, record);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -55,12 +55,12 @@ export class SearchDirectClientV1 extends DirectClient<any> implements ISearchCl
         let timing = this.instrument(correlationId, 'search.update_record');
         
         try {
-            return await this._controller.updateRecord(correlationId, record);
+            let res = await this._controller.updateRecord(correlationId, record);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -68,12 +68,12 @@ export class SearchDirectClientV1 extends DirectClient<any> implements ISearchCl
         let timing = this.instrument(correlationId, 'search.delete_record_by_id');
 
         try {
-            return await this._controller.deleteRecordById(correlationId, recordId);
+            let res = await this._controller.deleteRecordById(correlationId, recordId);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 }

@@ -3,7 +3,7 @@ import { CommandableHttpClient } from 'pip-services3-rpc-nodex';
 import { DateTimeConverter, FilterParams, PagingParams, DataPage, SortParams } from 'pip-services3-commons-nodex';
 import { ISearchClientV1 } from './ISearchClientV1';
 
-export class SearchHttpClientV1 extends CommandableHttpClient implements ISearchClientV1 {
+export class SearchCommandableHttpClientV1 extends CommandableHttpClient implements ISearchClientV1 {
 
     public constructor() {
         super('v1/search');
@@ -22,19 +22,18 @@ export class SearchHttpClientV1 extends CommandableHttpClient implements ISearch
                     sort: sort
                 }
             );
+            timing.endTiming();
 
             if (page == null || page.data.length == 0) {
                 return;
             }
 
             page.data = page.data.map(record => this.fixRecord(record));
-
+            
             return page;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
     
@@ -50,12 +49,11 @@ export class SearchHttpClientV1 extends CommandableHttpClient implements ISearch
                 }
             );
 
+            timing.endTiming();
             return this.fixRecord(record);
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -70,13 +68,11 @@ export class SearchHttpClientV1 extends CommandableHttpClient implements ISearch
                     record: record
                 }
             );
-
+            timing.endTiming();
             return this.fixRecord(record);
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -92,12 +88,11 @@ export class SearchHttpClientV1 extends CommandableHttpClient implements ISearch
                 }
             );
 
+            timing.endTiming();
             return this.fixRecord(record);
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
     
@@ -113,12 +108,11 @@ export class SearchHttpClientV1 extends CommandableHttpClient implements ISearch
                 },
             );
 
+            timing.endTiming();
             return this.fixRecord(record);
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -126,7 +120,7 @@ export class SearchHttpClientV1 extends CommandableHttpClient implements ISearch
         if (record == null) return null;
 
         record.time = DateTimeConverter.toNullableDateTime(record.time);
-
+        
         return record;
     }
 }

@@ -4,6 +4,6 @@ export declare class SearchClientFactory extends Factory {
     static Descriptor: Descriptor;
     static NullClientV1Descriptor: Descriptor;
     static DirectClientV1Descriptor: Descriptor;
-    static HttpClientV1Descriptor: Descriptor;
+    static CmdHttpClientV1Descriptor: Descriptor;
     constructor();
 }

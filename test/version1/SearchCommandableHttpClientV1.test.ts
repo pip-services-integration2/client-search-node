@@ -6,7 +6,7 @@ import { ConsoleLogger } from 'pip-services3-components-nodex';
 import { SearchMemoryPersistence } from 'service-search-node';
 import { SearchController } from 'service-search-node';
 import { SearchCommandableHttpServiceV1 } from 'service-search-node';
-import { SearchHttpClientV1 } from '../../src/version1/SearchHttpClientV1';
+import { SearchCommandableHttpClientV1 } from '../../src/version1/SearchCommandableHttpClientV1';
 import { SearchClientFixtureV1 } from './SearchClientFixtureV1';
 
 var httpConfig = ConfigParams.fromTuples(
@@ -17,7 +17,7 @@ var httpConfig = ConfigParams.fromTuples(
 
 suite('SearchCommandableHttpServiceV1', () => {
     let service: SearchCommandableHttpServiceV1;
-    let client: SearchHttpClientV1;
+    let client: SearchCommandableHttpClientV1;
     let fixture: SearchClientFixtureV1;
 
     setup(async () => {
@@ -32,12 +32,12 @@ suite('SearchCommandableHttpServiceV1', () => {
             new Descriptor('pip-services', 'logger', 'console', 'default', '1.0'), logger,
             new Descriptor('service-search', 'persistence', 'memory', 'default', '1.0'), persistence,
             new Descriptor('service-search', 'controller', 'default', 'default', '1.0'), controller,
-            new Descriptor('service-search', 'service', 'http', 'default', '1.0'), service
+            new Descriptor('service-search', 'service', 'commandable-http', 'default', '1.0'), service
         );
         controller.setReferences(references);
         service.setReferences(references);
 
-        client = new SearchHttpClientV1();
+        client = new SearchCommandableHttpClientV1();
         client.setReferences(references);
         client.configure(httpConfig);
 

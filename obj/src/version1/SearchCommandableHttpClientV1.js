@@ -9,21 +9,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SearchDirectClientV1 = void 0;
+exports.SearchCommandableHttpClientV1 = void 0;
 const pip_services3_rpc_nodex_1 = require("pip-services3-rpc-nodex");
 const pip_services3_commons_nodex_1 = require("pip-services3-commons-nodex");
-class SearchDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
+class SearchCommandableHttpClientV1 extends pip_services3_rpc_nodex_1.CommandableHttpClient {
     constructor() {
-        super();
-        this._dependencyResolver.put('controller', new pip_services3_commons_nodex_1.Descriptor('service-search', 'controller', '*', '*', '1.0'));
+        super('v1/search');
     }
     getRecords(correlationId, filter, paging, sort) {
         return __awaiter(this, void 0, void 0, function* () {
             let timing = this.instrument(correlationId, 'search.get_records');
             try {
-                let res = yield this._controller.getRecords(correlationId, filter, paging, sort);
+                let page = yield this.callCommand('get_records', correlationId, {
+                    filter: filter,
+                    paging: paging,
+                    sort: sort
+                });
                 timing.endTiming();
-                return res;
+                if (page == null || page.data.length == 0) {
+                    return;
+                }
+                page.data = page.data.map(record => this.fixRecord(record));
+                return page;
             }
             catch (err) {
                 timing.endFailure(err);
@@ -35,9 +42,11 @@ class SearchDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
         return __awaiter(this, void 0, void 0, function* () {
             let timing = this.instrument(correlationId, 'search.get_record_by_id');
             try {
-                let res = yield this._controller.getRecordById(correlationId, recordId);
+                let record = yield this.callCommand('get_record_by_id', correlationId, {
+                    record_id: recordId
+                });
                 timing.endTiming();
-                return res;
+                return this.fixRecord(record);
             }
             catch (err) {
                 timing.endFailure(err);
@@ -49,9 +58,11 @@ class SearchDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
         return __awaiter(this, void 0, void 0, function* () {
             let timing = this.instrument(correlationId, 'search.set_record');
             try {
-                let res = yield this._controller.setRecord(correlationId, record);
+                record = yield this.callCommand('set_record', correlationId, {
+                    record: record
+                });
                 timing.endTiming();
-                return res;
+                return this.fixRecord(record);
             }
             catch (err) {
                 timing.endFailure(err);
@@ -63,9 +74,11 @@ class SearchDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
         return __awaiter(this, void 0, void 0, function* () {
             let timing = this.instrument(correlationId, 'search.update_record');
             try {
-                let res = yield this._controller.updateRecord(correlationId, record);
+                record = yield this.callCommand('update_record', correlationId, {
+                    record: record
+                });
                 timing.endTiming();
-                return res;
+                return this.fixRecord(record);
             }
             catch (err) {
                 timing.endFailure(err);
@@ -77,9 +90,11 @@ class SearchDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
         return __awaiter(this, void 0, void 0, function* () {
             let timing = this.instrument(correlationId, 'search.delete_record_by_id');
             try {
-                let res = yield this._controller.deleteRecordById(correlationId, recordId);
+                let record = yield this.callCommand('delete_record_by_id', correlationId, {
+                    record_id: recordId
+                });
                 timing.endTiming();
-                return res;
+                return this.fixRecord(record);
             }
             catch (err) {
                 timing.endFailure(err);
@@ -87,6 +102,12 @@ class SearchDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
             }
         });
     }
+    fixRecord(record) {
+        if (record == null)
+            return null;
+        record.time = pip_services3_commons_nodex_1.DateTimeConverter.toNullableDateTime(record.time);
+        return record;
+    }
 }
-exports.SearchDirectClientV1 = SearchDirectClientV1;
-//# sourceMappingURL=SearchDirectClientV1.js.map
+exports.SearchCommandableHttpClientV1 = SearchCommandableHttpClientV1;
+//# sourceMappingURL=SearchCommandableHttpClientV1.js.map
